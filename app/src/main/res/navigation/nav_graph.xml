@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/OptionsFragment">
+
+    <fragment
+        android:id="@+id/OptionsFragment"
+        android:name="com.example.wordtwist.presentation.ui.OptionsFragment"
+        tools:layout="@layout/fragment_options">
+
+        <action
+            android:id="@+id/action_OptionsFragment_AlphabetListFragment"
+            app:destination="@id/AlphabetListFragment" />
+        <action
+            android:id="@+id/action_OptionsFragment_to_randomizeAlphabetTwistFragment"
+            app:destination="@id/randomizeAlphabetTwistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/AlphabetListFragment"
+        android:name="com.example.wordtwist.presentation.ui.AlphabetListFragment"
+        tools:layout="@layout/fragment_list_alphabet">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/OptionsFragment" />
+        <action
+            android:id="@+id/action_AlphabetListFragment_to_selectByAlphabetTwistFragment"
+            app:destination="@id/selectByAlphabetTwistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectByAlphabetTwistFragment"
+        android:name="com.example.wordtwist.presentation.ui.SelectByAlphabetTwistFragment"
+        tools:layout="@layout/fragment_select_by_alphabet_twist" >
+        <argument
+            android:name="alphabet"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+        <action
+            android:id="@+id/action_selectByAlphabetTwistFragment_to_AlphabetListFragment"
+            app:destination="@id/AlphabetListFragment" />
+        <action
+            android:id="@+id/action_selectByAlphabetTwistFragment_to_OptionsFragment"
+            app:destination="@id/OptionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/randomizeAlphabetTwistFragment"
+        android:name="com.example.wordtwist.presentation.ui.RandomizeAlphabetTwistFragment"
+        tools:layout="@layout/fragment_randomize_alphabet_twist" >
+        <action
+            android:id="@+id/action_randomizeAlphabetTwistFragment_to_OptionsFragment"
+            app:destination="@id/OptionsFragment" />
+    </fragment>
+</navigation>
