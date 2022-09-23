@@ -1,5 +1,6 @@
 package com.example.wordtwist.presentation.ui
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
@@ -58,12 +60,17 @@ class RandomizeAlphabetTwistFragment : Fragment() {
                         .setMessage(R.string.choose_hint_options)
                         .setPositiveButton(getString(R.string.definition)) { _, _ ->
                             showWordDefinition()
+                            it.isEnabled = false
+
                         }
                         .setNegativeButton(getString(R.string.first_alphabet)) {_,_ ->
                             showFirstAlphabet()
+                            it.isEnabled = false
 
                         }
                         .show()
+
+
         }
 
         //trigger submit button when user clicks enter
@@ -122,6 +129,7 @@ class RandomizeAlphabetTwistFragment : Fragment() {
             .setPositiveButton(getString(R.string.positive)) { _, _ ->
             }
             .show()
+
         usedHint = true
         hintUseCount++
     }
@@ -156,6 +164,7 @@ class RandomizeAlphabetTwistFragment : Fragment() {
         if (playerWord.isNotEmpty()) {
             if (viewModel.isUserWordCorrect(playerWord, hintUseCount)) {
                 setErrorTextField(false)
+                hintUseCount = 0
                 if (viewModel.nextWord()) {
                     showFinalScoreDialog()
                 }
@@ -165,7 +174,6 @@ class RandomizeAlphabetTwistFragment : Fragment() {
         }else {
             setErrorTextField(true)
         }
-        usedHint = false
     }
 
     private fun showFinalScoreDialog() {
