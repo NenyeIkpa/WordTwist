@@ -82,6 +82,7 @@
         android:id="@+id/by_alphabet_show_hint_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/hint"
         app:layout_constraintStart_toEndOf="@id/by_alphabet_answer_et_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/by_alphabet_answer_et_layout"

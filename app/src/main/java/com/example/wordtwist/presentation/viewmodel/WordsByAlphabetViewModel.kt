@@ -30,8 +30,9 @@ class WordsByAlphabetViewModel : ViewModel(){
         for (i in Words.words.indices) {
             if (alphabet.equals(Words.words[i].first().first.first().toString(), true))
                 currentWordSelection = Words.words[i].random()
-                currentWord = currentWordSelection!!.first
-            _currentWordMeaning= currentWordSelection.second
+            Log.d(TAG, "getNextWordByAlphabet: $currentWordSelection")
+                currentWord = currentWordSelection?.first ?: "car"
+            _currentWordMeaning= currentWordSelection?.second ?: "a type of vehicle"
             Log.d(TAG, "getNextWordByAlphabet: $currentWord ")
         }
 //       currentWord =  when(alphabet) {
@@ -93,5 +94,11 @@ class WordsByAlphabetViewModel : ViewModel(){
         _currentWordCount.value = 0
         wordList.clear()
         getNextWordByAlphabet(alphabet)
+    }
+
+    fun onLaunch() {
+        _score.value = 0
+        _currentWordCount.value = 0
+        wordList.clear()
     }
 }

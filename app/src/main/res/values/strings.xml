@@ -33,4 +33,8 @@
     <string name="unscramble_me">unscramble me</string>
     <string name="unscramble_and_form_a_word_using_the_alphabets_given">Unscramble and form a word using the alphabets given.</string>
     <string name="hint">Hint</string>
+    <string name="get_word_meaning">Get the definition of the expected word at a cost of 5 pts.</string>
+    <string name="choose_hint_options">Get a hint by clicking on any of the options below. Each hint costs 5 pts.</string>
+    <string name="definition">DEFINITION</string>
+    <string name="first_alphabet">FIRST-LETTER</string>
 </resources>

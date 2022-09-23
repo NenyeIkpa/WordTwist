@@ -3,14 +3,13 @@ package com.example.wordtwist.presentation.ui
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.wordtwist.R
@@ -27,6 +26,7 @@ class SelectByAlphabetTwistFragment : Fragment() {
     private val binding get()= _binding!!
     private lateinit var alphabet: String
     private lateinit var viewModel: WordsByAlphabetViewModel
+    private var usedHint: Boolean = false
 
     companion object {
         val ALPHABET = "alphabet"
@@ -54,39 +54,43 @@ class SelectByAlphabetTwistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        displaySelectedBeginningAlphabet()
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 showAlertDialog()
             }
         })
 
-        binding.byAlphabetShowHintIv.setOnHoverListener { _, _ ->
-            MaterialAlertDialogBuilder(requireContext())
-                .setMessage("Click to get a hint(meaning of word)")
-                .setCancelable(false)
-                .show()
-            true
-        }
-
         binding.byAlphabetShowHintIv.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
-                .setMessage(viewModel.currentWordMeaning)
-                .setPositiveButton(getString(R.string.positive)) {_,_ ->
-                    //return
+                .setMessage(getString(R.string.get_word_meaning))
+                .setPositiveButton(getString(R.string.positive)) { _, _ ->
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setMessage(viewModel.currentWordMeaning)
+                        .setPositiveButton(getString(R.string.positive)) { _, _ ->
+
+                        }
+                        .show()
+                    usedHint = true
+
+                }
+                .setNegativeButton(getString(R.string.negative)) {_,_ ->
+
                 }
                 .show()
         }
 
-        displaySelectedBeginningAlphabet()
-
        viewModel = ViewModelProvider(requireActivity())[WordsByAlphabetViewModel::class.java]
         Log.d(TAG, "onViewCreated: ")
+        viewModel.onLaunch()
         viewModel.nextWordByAlphabet(alphabet)
 
         //trigger submit button when user clicks enter
         binding.byAlphabetAnswerEtField.setOnEditorActionListener { _, actionId, keyEvent ->
             if ((keyEvent != null && (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 binding.byAlphabetButtonSubmit.performClick()
+                return@setOnEditorActionListener true
             }
             false
 
@@ -95,7 +99,9 @@ class SelectByAlphabetTwistFragment : Fragment() {
             hideKeyboard(requireView())
             onSubmitWord()
         }
-        binding.byAlphabetButtonSkip.setOnClickListener { onSkipWord() }
+        binding.byAlphabetButtonSkip.setOnClickListener {
+            hideKeyboard(requireView())
+            onSkipWord() }
 
         //observe current scrambled word livedata
         viewModel.currentScrambledWord.observe(viewLifecycleOwner){newWord ->
@@ -114,7 +120,8 @@ class SelectByAlphabetTwistFragment : Fragment() {
 
 
     private fun showAlertDialog() {
-       MaterialAlertDialogBuilder(requireContext())
+       MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialog)
+            .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.word_meaning_background))
             .setMessage(getString(R.string.confirm_exit))
             .setCancelable(false)
             .setNegativeButton(getString(R.string.negative)) {_,_ ->
@@ -156,7 +163,6 @@ class SelectByAlphabetTwistFragment : Fragment() {
 
     private fun onSubmitWord() {
         val playerWord = binding.byAlphabetAnswerEtField.text.toString()
-        val usedHint = binding.byAlphabetShowHintIv.isSelected
         if (viewModel.isUserWordCorrect(playerWord,usedHint)){
             setErrorTextField(false)
             if (viewModel.nextWordByAlphabet(alphabet)) {
@@ -165,6 +171,7 @@ class SelectByAlphabetTwistFragment : Fragment() {
         }else{
             setErrorTextField(true)
         }
+        usedHint = false
     }
 
     private fun showFinalScoreDialog() {

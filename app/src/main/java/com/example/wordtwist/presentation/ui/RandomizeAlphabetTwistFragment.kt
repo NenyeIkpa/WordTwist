@@ -25,6 +25,8 @@ class RandomizeAlphabetTwistFragment : Fragment() {
     private var _binding: FragmentRandomizeAlphabetTwistBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: WordsViewModel
+    private var usedHint: Boolean = false
+    private var hintUseCount: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,20 +49,37 @@ class RandomizeAlphabetTwistFragment : Fragment() {
         })
 
         viewModel = ViewModelProvider(requireActivity())[WordsViewModel::class.java]
+        viewModel.onLaunch()
         viewModel.nextWord()
+
+
+        binding.showHintIv.setOnClickListener {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setMessage(R.string.choose_hint_options)
+                        .setPositiveButton(getString(R.string.definition)) { _, _ ->
+                            showWordDefinition()
+                        }
+                        .setNegativeButton(getString(R.string.first_alphabet)) {_,_ ->
+                            showFirstAlphabet()
+
+                        }
+                        .show()
+        }
 
         //trigger submit button when user clicks enter
         binding.answerEtField.setOnEditorActionListener { _, actionId, keyEvent ->
             if ((keyEvent != null && (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 binding.buttonSubmit.performClick()
             }
-            false
+           false
 
         }
         binding.buttonSubmit.setOnClickListener {
             hideKeyboard(requireView())
             onSubmitWord() }
-        binding.buttonSkip.setOnClickListener { onSkipWord() }
+        binding.buttonSkip.setOnClickListener {
+            hideKeyboard(requireView())
+            onSkipWord() }
 
         viewModel.currentScrambledWord.observe(viewLifecycleOwner) {newWord ->
             binding.unscrambledWord.text = newWord
@@ -73,6 +92,38 @@ class RandomizeAlphabetTwistFragment : Fragment() {
         viewModel.currentWordCount.observe(viewLifecycleOwner) {currentWordCount ->
             binding.wordCount.text = getString(R.string.no_of_words_unscrambled, currentWordCount)
         }
+
+        //trigger submit button when user clicks enter
+        binding.answerEtField.setOnEditorActionListener { _, actionId, keyEvent ->
+            if ((keyEvent != null && (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                binding.buttonSubmit.performClick()
+            }
+            false
+
+        }
+    }
+
+    private fun showFirstAlphabet() {
+        val firstLetter = viewModel.word.first().uppercase()
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(firstLetter)
+            .setPositiveButton(getString(R.string.positive)) { _, _ ->
+            }
+            .show()
+        usedHint = true
+        hintUseCount++
+        binding.answerEtField.setText(firstLetter)
+
+    }
+
+    private fun showWordDefinition() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(viewModel.currentWordMeaning)
+            .setPositiveButton(getString(R.string.positive)) { _, _ ->
+            }
+            .show()
+        usedHint = true
+        hintUseCount++
     }
 
     private fun onSkipWord() {
@@ -101,8 +152,9 @@ class RandomizeAlphabetTwistFragment : Fragment() {
 
     private fun onSubmitWord() {
         val playerWord = binding.answerEtField.text.toString()
+        Log.d(TAG, "onSubmitWord: $playerWord")
         if (playerWord.isNotEmpty()) {
-            if (viewModel.isUserWordCorrect(playerWord)) {
+            if (viewModel.isUserWordCorrect(playerWord, hintUseCount)) {
                 setErrorTextField(false)
                 if (viewModel.nextWord()) {
                     showFinalScoreDialog()
@@ -113,6 +165,7 @@ class RandomizeAlphabetTwistFragment : Fragment() {
         }else {
             setErrorTextField(true)
         }
+        usedHint = false
     }
 
     private fun showFinalScoreDialog() {
@@ -141,7 +194,7 @@ class RandomizeAlphabetTwistFragment : Fragment() {
                 //game continues
             }
             .setPositiveButton(getString(R.string.positive)) {_,_ ->
-                findNavController().navigate(R.id.action_selectByAlphabetTwistFragment_to_OptionsFragment)
+                findNavController().navigate(R.id.action_randomizeAlphabetTwistFragment_to_OptionsFragment)
             }
             .show()
     }
