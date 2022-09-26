@@ -123,7 +123,7 @@ class RandomizeAlphabetTwistFragment : Fragment() {
 
     }
 
-    private fun showWordDefinition() {
+    private fun showWordDefinition(): Boolean {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(viewModel.currentWordMeaning)
             .setPositiveButton(getString(R.string.positive)) { _, _ ->
@@ -132,6 +132,7 @@ class RandomizeAlphabetTwistFragment : Fragment() {
 
         usedHint = true
         hintUseCount++
+        return true
     }
 
     private fun onSkipWord() {

@@ -26,21 +26,15 @@ class WordsByAlphabetViewModel : ViewModel(){
     val score get() = _score
 
     private fun getNextWordByAlphabet(alphabet: String) {
-        var currentWordSelection: Pair<String,String>? = null
-        for (i in Words.words.indices) {
-            if (alphabet.equals(Words.words[i].first().first.first().toString(), true))
-                currentWordSelection = Words.words[i].random()
+//        var currentWordSelection: Pair<String,String>? = null
+//        for (i in Words.words.indices) {
+//            if (alphabet.equals(Words.words[i].first().first.first().toString(), true))
+//                currentWordSelection = Words.words[i].random()
+           val currentWordSelection = Words.getWordsByStartingLetter(alphabet).random()
             Log.d(TAG, "getNextWordByAlphabet: $currentWordSelection")
-                currentWord = currentWordSelection?.first ?: "car"
-            _currentWordMeaning= currentWordSelection?.second ?: "a type of vehicle"
+                currentWord = currentWordSelection.first
+            _currentWordMeaning= currentWordSelection.second
             Log.d(TAG, "getNextWordByAlphabet: $currentWord ")
-        }
-//       currentWord =  when(alphabet) {
-//             "A" -> com.example.wordtwist.data.model.Words().A.random().first
-//             "B" -> com.example.wordtwist.data.model.Words().B.random().first
-//             "C" -> com.example.wordtwist.data.model.Words().C.random().first
-//             "D" -> com.example.wordtwist.data.model.Words().E.random().first
-
 //        }
 
         //        breakdown current word to characters
