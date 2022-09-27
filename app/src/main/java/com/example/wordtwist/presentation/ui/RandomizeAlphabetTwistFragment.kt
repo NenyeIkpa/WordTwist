@@ -27,8 +27,6 @@ class RandomizeAlphabetTwistFragment : Fragment() {
     private var _binding: FragmentRandomizeAlphabetTwistBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: WordsViewModel
-    private var usedHint: Boolean = false
-    private var hintUseCount: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,13 +58,10 @@ class RandomizeAlphabetTwistFragment : Fragment() {
                         .setMessage(R.string.choose_hint_options)
                         .setPositiveButton(getString(R.string.definition)) { _, _ ->
                             showWordDefinition()
-                            it.isEnabled = false
 
                         }
                         .setNegativeButton(getString(R.string.first_alphabet)) {_,_ ->
                             showFirstAlphabet()
-                            it.isEnabled = false
-
                         }
                         .show()
 
@@ -112,27 +107,24 @@ class RandomizeAlphabetTwistFragment : Fragment() {
 
     private fun showFirstAlphabet() {
         val firstLetter = viewModel.word.first().uppercase()
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(firstLetter)
-            .setPositiveButton(getString(R.string.positive)) { _, _ ->
-            }
-            .show()
-        usedHint = true
-        hintUseCount++
         binding.answerEtField.setText(firstLetter)
+        viewModel.isHintUsed(true)
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setMessage(firstLetter)
+//            .setPositiveButton(getString(R.string.positive)) { _, _ ->
+//            }
+//            .show()
+
 
     }
 
-    private fun showWordDefinition(): Boolean {
+    private fun showWordDefinition(){
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(viewModel.currentWordMeaning)
             .setPositiveButton(getString(R.string.positive)) { _, _ ->
             }
             .show()
-
-        usedHint = true
-        hintUseCount++
-        return true
+        viewModel.isHintUsed(true)
     }
 
     private fun onSkipWord() {
@@ -162,10 +154,10 @@ class RandomizeAlphabetTwistFragment : Fragment() {
     private fun onSubmitWord() {
         val playerWord = binding.answerEtField.text.toString()
         Log.d(TAG, "onSubmitWord: $playerWord")
+        val result = viewModel.isUserWordCorrect(playerWord)
         if (playerWord.isNotEmpty()) {
-            if (viewModel.isUserWordCorrect(playerWord, hintUseCount)) {
+            if (result) {
                 setErrorTextField(false)
-                hintUseCount = 0
                 if (viewModel.nextWord()) {
                     showFinalScoreDialog()
                 }

@@ -10,7 +10,7 @@ import com.example.wordtwist.data.model.words.Words.words
 private const val TAG = "WordsViewModel"
 
 private const val SCORE_INCREASE = 20
-private const val HINT_USE_VALUE = 5
+private const val SCORE_DECREASE = 5
 
 class WordsViewModel: ViewModel() {
    private lateinit var currentWord: String
@@ -54,18 +54,21 @@ class WordsViewModel: ViewModel() {
         }
     }
 
-    private fun increaseScore( hintUseCount: Int) {
-        if (hintUseCount == 0) {
+    private fun increaseScore() {
             _score.value = _score.value?.plus(SCORE_INCREASE)
-        }else {
-            val hintValue = HINT_USE_VALUE.times(hintUseCount)
-            _score.value = score.value?.plus(SCORE_INCREASE)?.minus(hintValue)
-        }
     }
 
-    fun isUserWordCorrect(playerWord: String, hintUseCount: Int): Boolean {
+    private fun decreaseScore() {
+        _score.value = _score.value?.minus(SCORE_DECREASE)
+    }
+
+    fun isHintUsed(hintUse: Boolean) {
+        if (hintUse) { decreaseScore() }
+    }
+
+    fun isUserWordCorrect(playerWord: String): Boolean {
      if (playerWord.equals(currentWord, true)) {
-         increaseScore(hintUseCount)
+         increaseScore()
          return true
      }
         return false

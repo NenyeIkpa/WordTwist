@@ -4,7 +4,7 @@ import com.example.wordtwist.data.model.words.atozwords.*
 
 const val MAX_NUMBER_OF_WORDS = 10
 object Words {
-    val words = listOf(A, B, C)
+    val words = listOf(A, B, C, D, E, F, G, H, I ,J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z)
 
     fun getWordsByStartingLetter(alphabet: String): HashMap<String,String> {
       return  when(alphabet)
