@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.wordtwist.data.model.words.MAX_NUMBER_OF_WORDS
 import com.example.wordtwist.data.model.words.Words
 
@@ -45,13 +46,16 @@ class WordsByAlphabetViewModel : ViewModel(){
             tempWord.shuffle()
         }
 //        check if the next word being selected has been unscrambled
-        if (wordList.contains(currentWord)) {
-            getNextWordByAlphabet(alphabet)
-        } else {
+//        if (wordList.contains(currentWord)) {
+//            getNextWordByAlphabet(alphabet)
             _currentScrambledWord.value = String(tempWord)
             currentWordCount.value = _currentWordCount.value?.inc()
-            wordList.add(currentWord)
-        }
+//        }
+        //        else {
+//            _currentScrambledWord.value = String(tempWord)
+//            currentWordCount.value = _currentWordCount.value?.inc()
+//            wordList.add(currentWord)
+//        }
     }
 
     private fun increaseScore(usedHint: Boolean) {
