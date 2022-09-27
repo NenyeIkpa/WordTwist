@@ -1,6 +1,6 @@
 package com.example.wordtwist.data.model.words.atozwords
 
-val B = listOf<Pair<String, String>>(
+val B = hashMapOf<String, String>(
     "bachelor" to "a man who has never been married",
     "beehive" to "a place where bees are kep to produce honey",
     "bargain" to "to discuss the conditions of a sale, agreement",

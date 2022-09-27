@@ -1,6 +1,6 @@
 package com.example.wordtwist.data.model.words.atozwords
 
-val C = listOf<Pair<String,String>>(
+val C = hashMapOf<String,String>(
     "carpenter" to "someone whose job is making and repairing wooden objects",
     "carnival" to "a public event where people play music, wear special clothes and dance in the streets",
     "cognitive" to "relating to the process of knowing, understanding and learning something",

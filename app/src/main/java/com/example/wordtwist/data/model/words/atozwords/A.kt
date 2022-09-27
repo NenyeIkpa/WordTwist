@@ -1,6 +1,6 @@
 package com.example.wordtwist.data.model.words.atozwords
 
- val A = listOf<Pair<String,String>>(
+ val A = hashMapOf<String,String>(
     "animal" to "any living creature that can move around and react to the world through its senses",
     "achievement" to "something good and impressive that one succeeds in doing",
     "apple" to "a round fruit of a tree of the rose family that has thin green or red skin and is white inside",

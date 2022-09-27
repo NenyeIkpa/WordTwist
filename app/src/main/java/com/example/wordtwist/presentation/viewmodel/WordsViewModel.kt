@@ -29,9 +29,14 @@ class WordsViewModel: ViewModel() {
 
     private fun getNextWord() {
         //get a random list from the list of words and a random word from that random list.
-        val word = Words.words.random().random()
-        currentWord = word.first
-        _currentWordMeaning = word.second
+//        val word = Words.words.random().random()
+//        currentWord = word.first
+//        _currentWordMeaning = word.second
+
+        val word = Words.words.random().entries.random()
+        currentWord = word.key
+        _currentWordMeaning = word.value
+
 //        breakdown current word to characters
         val tempWord = currentWord.toCharArray()
 

@@ -6,9 +6,7 @@ const val MAX_NUMBER_OF_WORDS = 10
 object Words {
     val words = listOf(A, B, C)
 
-
-
-    fun getWordsByStartingLetter(alphabet: String): List<Pair<String,String>> {
+    fun getWordsByStartingLetter(alphabet: String): HashMap<String,String> {
       return  when(alphabet)
       {
           "A" -> A

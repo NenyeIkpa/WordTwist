@@ -30,10 +30,10 @@ class WordsByAlphabetViewModel : ViewModel(){
 //        for (i in Words.words.indices) {
 //            if (alphabet.equals(Words.words[i].first().first.first().toString(), true))
 //                currentWordSelection = Words.words[i].random()
-           val currentWordSelection = Words.getWordsByStartingLetter(alphabet).random()
+           val currentWordSelection = Words.getWordsByStartingLetter(alphabet).entries.random()
             Log.d(TAG, "getNextWordByAlphabet: $currentWordSelection")
-                currentWord = currentWordSelection.first
-            _currentWordMeaning= currentWordSelection.second
+                currentWord = currentWordSelection.key
+            _currentWordMeaning= currentWordSelection.value
             Log.d(TAG, "getNextWordByAlphabet: $currentWord ")
 //        }
 

@@ -1,3 +1,5 @@
 package com.example.wordtwist.data.model.words.atozwords
 
-val N = listOf<Pair<String,String>>()
+val N = hashMapOf<String,String>(
+    "necessary" to "needed. required. essential",
+    "nuance" to "a subtle difference.")

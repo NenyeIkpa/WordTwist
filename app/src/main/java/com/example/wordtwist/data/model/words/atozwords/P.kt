@@ -1,3 +1,6 @@
 package com.example.wordtwist.data.model.words.atozwords
 
-val P = listOf<Pair<String,String>>()
+val P = hashMapOf<String,String>(
+    "peculiar" to "different from norm. strange",
+    "palatable" to "pleasant to taste"
+)
