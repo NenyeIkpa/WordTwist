@@ -3,9 +3,11 @@ package com.example.wordtwist.presentation.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.wordtwist.R
 import com.example.wordtwist.databinding.FragmentOptionsBinding
+import com.example.wordtwist.presentation.viewmodel.WordsByAlphabetViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -43,6 +45,7 @@ class OptionsFragment : Fragment() {
             findNavController().navigate(R.id.action_OptionsFragment_to_randomizeAlphabetTwistFragment)
 
         }
+
     }
 
 

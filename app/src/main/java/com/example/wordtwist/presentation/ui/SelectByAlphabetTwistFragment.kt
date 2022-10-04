@@ -1,6 +1,7 @@
 package com.example.wordtwist.presentation.ui
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,22 +11,25 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import com.example.wordtwist.R
 import com.example.wordtwist.data.model.words.Words
 import com.example.wordtwist.databinding.FragmentSelectByAlphabetTwistBinding
 import com.example.wordtwist.presentation.viewmodel.WordsByAlphabetViewModel
 import com.example.wordtwist.presentation.viewmodel.WordsViewModel
+import com.example.wordtwist.utils.OnAlphabetClickListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 private const val TAG = "SelectByAlphabetTwistFragment"
 
-class SelectByAlphabetTwistFragment : Fragment() {
+class SelectByAlphabetTwistFragment : Fragment(){
     private var _binding: FragmentSelectByAlphabetTwistBinding?= null
     private val binding get()= _binding!!
-    private lateinit var alphabet: String
-    private lateinit var viewModel: WordsByAlphabetViewModel
+    private lateinit var currentAlphabet: String
+    private val viewModel: WordsByAlphabetViewModel by activityViewModels()
     private var usedHint: Boolean = false
 
     companion object {
@@ -36,9 +40,9 @@ class SelectByAlphabetTwistFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         //retrieve the alphabet from the fragment arguments
-        arguments?.let {
-            alphabet = it.getString(ALPHABET).toString()
-        }
+//        arguments?.let {
+//            alphabet = it.getString(ALPHABET).toString()
+//        }
     }
 
 
@@ -53,6 +57,8 @@ class SelectByAlphabetTwistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        currentAlphabet = viewModel.currentAlphabet.value.toString()
 
         displaySelectedBeginningAlphabet()
 
@@ -81,10 +87,11 @@ class SelectByAlphabetTwistFragment : Fragment() {
                 .show()
         }
 
-       viewModel = ViewModelProvider(requireActivity())[WordsByAlphabetViewModel::class.java]
-        Log.d(TAG, "onViewCreated: ")
-        viewModel.onLaunch()
-        viewModel.nextWordByAlphabet(alphabet)
+
+//       viewModel = ViewModelProvider(requireActivity())[WordsByAlphabetViewModel::class.java]
+//        Log.d(TAG, "onViewCreated: ")
+
+//        viewModel.nextWordByAlphabet(alphabet)
 
         //trigger submit button when user clicks enter
         binding.byAlphabetAnswerEtField.setOnEditorActionListener { _, actionId, keyEvent ->
@@ -95,10 +102,12 @@ class SelectByAlphabetTwistFragment : Fragment() {
             false
 
         }
+
         binding.byAlphabetButtonSubmit.setOnClickListener {
             hideKeyboard(requireView())
             onSubmitWord()
         }
+
         binding.byAlphabetButtonSkip.setOnClickListener {
             hideKeyboard(requireView())
             onSkipWord() }
@@ -108,6 +117,7 @@ class SelectByAlphabetTwistFragment : Fragment() {
             binding.byAlphabetUnscrambledWord.text = newWord
         }
 
+
         viewModel.score.observe(viewLifecycleOwner) {currentScore ->
             binding.byAlphabetScore.text = getString(R.string.score, currentScore)
         }
@@ -115,6 +125,8 @@ class SelectByAlphabetTwistFragment : Fragment() {
       viewModel.currentWordCount.observe(viewLifecycleOwner) {currentWordCount ->
           binding.byAlphabetWordCount.text = getString(R.string.no_of_words_unscrambled, currentWordCount)
       }
+
+
     }
 
 
@@ -128,17 +140,18 @@ class SelectByAlphabetTwistFragment : Fragment() {
                 //game continues
             }
             .setPositiveButton(getString(R.string.positive)) {_,_ ->
-                findNavController().navigate(R.id.action_selectByAlphabetTwistFragment_to_OptionsFragment)
+                findNavController().navigate(R.id.OptionsFragment)
             }
            .show()
     }
 
     private fun displaySelectedBeginningAlphabet() {
-        binding.byAlphabetWordsThatBeginWith.text = getString(R.string.words_that_begin_with, alphabet)
+//        binding.byAlphabetWordsThatBeginWith.text = getString(R.string.words_that_begin_with, alphabet)
+        binding.byAlphabetWordsThatBeginWith.text = getString(R.string.words_that_begin_with, viewModel.currentAlphabet.value.toString())
     }
 
     private fun onSkipWord() {
-        if (!viewModel.nextWordByAlphabet(alphabet)) {
+        if (!viewModel.nextWordByAlphabet(currentAlphabet)) {
             setErrorTextField(false)
         }else {
             showFinalScoreDialog()
@@ -165,7 +178,7 @@ class SelectByAlphabetTwistFragment : Fragment() {
         val playerWord = binding.byAlphabetAnswerEtField.text.toString()
         if (viewModel.isUserWordCorrect(playerWord,usedHint)){
             setErrorTextField(false)
-            if (viewModel.nextWordByAlphabet(alphabet)) {
+            if (viewModel.nextWordByAlphabet(currentAlphabet)) {
                 showFinalScoreDialog()
             }
         }else{
@@ -173,6 +186,7 @@ class SelectByAlphabetTwistFragment : Fragment() {
         }
         usedHint = false
     }
+
 
     private fun showFinalScoreDialog() {
         MaterialAlertDialogBuilder(requireContext())
@@ -193,7 +207,7 @@ class SelectByAlphabetTwistFragment : Fragment() {
     }
 
     private fun restartGame() {
-        viewModel.restartGame(alphabet)
+        viewModel.restartGame(currentAlphabet)
         setErrorTextField(false)
     }
 
@@ -207,3 +221,4 @@ class SelectByAlphabetTwistFragment : Fragment() {
         _binding = null
     }
 }
+

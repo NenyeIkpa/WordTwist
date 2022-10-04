@@ -25,7 +25,9 @@ class WordsViewModel: ViewModel() {
     private var _score = MutableLiveData<Int>(0)
     val score get() = _score
 
-
+    init {
+        onLaunch()
+    }
 
     private fun getNextWord() {
         //get a random list from the list of words and a random word from that random list.

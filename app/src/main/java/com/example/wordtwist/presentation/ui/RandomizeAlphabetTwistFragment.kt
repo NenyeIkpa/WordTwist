@@ -49,7 +49,6 @@ class RandomizeAlphabetTwistFragment : Fragment() {
         })
 
         viewModel = ViewModelProvider(requireActivity())[WordsViewModel::class.java]
-        viewModel.onLaunch()
         viewModel.nextWord()
 
 

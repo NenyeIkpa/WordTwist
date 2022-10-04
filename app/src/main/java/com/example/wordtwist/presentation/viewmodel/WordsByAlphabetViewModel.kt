@@ -15,7 +15,8 @@ private const val HINT_USE_VALUE = 5
 
 class WordsByAlphabetViewModel : ViewModel(){
 
-    private lateinit var currentWord: String
+    private var _currentWord = MutableLiveData<String>()
+    val currentWord: LiveData<String> get() = _currentWord
     private var _currentWordMeaning: String? = null
     val currentWordMeaning get() = _currentWordMeaning
     private var wordList = mutableListOf<String>()
@@ -26,6 +27,19 @@ class WordsByAlphabetViewModel : ViewModel(){
     private var _score = MutableLiveData(0)
     val score get() = _score
 
+    private var _currentAlphabet = MutableLiveData<String>()
+    val currentAlphabet: LiveData<String> get() = _currentAlphabet
+
+    init {
+        onLaunch()
+    }
+
+
+    fun getAlphabet(alphabet: String){
+        _currentAlphabet.value = alphabet
+    }
+
+
     private fun getNextWordByAlphabet(alphabet: String) {
 //        var currentWordSelection: Pair<String,String>? = null
 //        for (i in Words.words.indices) {
@@ -33,16 +47,16 @@ class WordsByAlphabetViewModel : ViewModel(){
 //                currentWordSelection = Words.words[i].random()
            val currentWordSelection = Words.getWordsByStartingLetter(alphabet).entries.random()
             Log.d(TAG, "getNextWordByAlphabet: $currentWordSelection")
-                currentWord = currentWordSelection.key
+                _currentWord.value = currentWordSelection.key
             _currentWordMeaning= currentWordSelection.value
             Log.d(TAG, "getNextWordByAlphabet: $currentWord ")
 //        }
 
         //        breakdown current word to characters
-        val tempWord = currentWord.toCharArray()
+        val tempWord = currentWord.value!!.toCharArray()
 
 //        ensure that scrambled word displayed is not equal the word required
-        while (String(tempWord).equals(currentWord, false)) {
+        while (String(tempWord).equals(currentWord.value, false)) {
             tempWord.shuffle()
         }
 //        check if the next word being selected has been unscrambled
@@ -68,7 +82,7 @@ class WordsByAlphabetViewModel : ViewModel(){
     }
 
     fun isUserWordCorrect(playerWord: String, usedHint: Boolean): Boolean {
-        if (playerWord.equals(currentWord, true)) {
+        if (playerWord.equals(currentWord.value, true)) {
             increaseScore(usedHint)
             return true
         }
@@ -94,7 +108,7 @@ class WordsByAlphabetViewModel : ViewModel(){
         getNextWordByAlphabet(alphabet)
     }
 
-    fun onLaunch() {
+    private fun onLaunch() {
         _score.value = 0
         _currentWordCount.value = 0
         wordList.clear()

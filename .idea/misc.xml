@@ -4,18 +4,23 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_error.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/alphabet_background.xml" value="0.1705" />
+        <entry key="app/src/main/res/drawable/alphabet_base_state.xml" value="0.1635" />
+        <entry key="app/src/main/res/drawable/alphabet_drawable.xml" value="0.1635" />
         <entry key="app/src/main/res/drawable/ic_baseline_highlight_24.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_clue_highlight.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/ic_grid_layout.xml" value="0.15" />
         <entry key="app/src/main/res/drawable/ic_linear_layout.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/word_meaning_background.xml" value="0.2085" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/alphabet_list_item.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/by_alphabet_sliding_layout.xml" value="0.30618892508143325" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_list_alphabet.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_randomize_alphabet_twist.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/fragment_select_by_alphabet_twist.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_select_by_alphabet_twist.xml" value="0.23209876543209876" />
         <entry key="app/src/main/res/layout/word_meaning.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/menu/alphabet_list_layout_menu.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.14010416666666667" />
